@@ -10,7 +10,7 @@ Pour débuter l’installation de docker sur Debian, on commence par une mise à
 
 Puis l’installation des dépendances :
 
-`sudo apt-get install \
+`sudo apt install \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -19,12 +19,13 @@ Puis l’installation des dépendances :
 
 Ajout de la clé GPG officielle de Docker :
 
-`curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg`
+`sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg`
 
 Ajout du repository Docker dans les sources : 
 
 `echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null`
 
 Mise à jour des sources :
@@ -37,7 +38,8 @@ Téléchargement de docker depuis les sources :
 
 Vérification de l’installation de Docker :
 
-docker run hello-world
+`sudo chmod 777 /var/run/docker.sock
+docker run hello-world`
 
 Quelques commandes utiles :
 
@@ -74,7 +76,7 @@ Les instructions dans un dockerfile :
 - Lancer la commande python3 ./main.py
 
 Une fois cela fait, il faut build l'image :
-`docker build -t python-imdb`
+`docker build -t python-imdb .`
 
 Lancer l'image :
 `docker run python-imdb`
